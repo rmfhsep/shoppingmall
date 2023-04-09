@@ -1,50 +1,43 @@
 import { useState } from "react";
-
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
+
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-
+import Main from "./pages/Main";
+import Detail from "./pages/Detail";
 import { data } from "./data";
 
 function App() {
   const [datas, setDatas] = useState(data);
+  console.log(datas);
+  const navigate = useNavigate();
 
   return (
     <div className="App">
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="#home">SHOP</Navbar.Brand>
+          <Navbar.Brand>SHOP</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Cart</Nav.Link>
+            <Nav.Link onClick={() => navigate("/")}>Home</Nav.Link>
+
+            <Nav.Link onClick={() => navigate("/detail")}>Detail</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
 
-      <div className="main-bg"></div>
+      <Routes>
+        <Route path="/" element={<Main datas={datas} />} />
+        <Route path="/detail/:id" element={<Detail datas={datas} />} />
 
-      <div>
-        <Row>
-          {datas.map((shoe, idx) => {
-            return (
-              <Col xs={6} md={4}>
-                <img
-                  src={`https://codingapple1.github.io/shop/shoes${
-                    idx + 1
-                  }.jpg`}
-                  width="80%"
-                />
-                <h4>{shoe.title}</h4>
-                <p>{shoe.price}</p>
-              </Col>
-            );
-          })}
-        </Row>
-      </div>
+        {/* <Route path="about" element={<About />}>
+          <Route path="member" element={<div>멤버</div>} />
+        </Route> */}
+
+        <Route path="*" element={<div>없는 페이지에요.</div>} />
+      </Routes>
     </div>
   );
 }
